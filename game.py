@@ -9,6 +9,9 @@ import datetime  # 添加在文件开头
 
 from ui import init_font
 
+# 新增全局变量初始化
+final_game_time = 0
+
 os.environ['PYGAME_DISABLE_RUNNABLE'] = '1'  # 新增在文件开头
 def gameLoop():
     global final_game_time
