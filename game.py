@@ -122,45 +122,50 @@ def gameLoop():
                 final_game_time = (pygame.time.get_ticks() - start_time) // 1000  # 新增冻结时间
 
         # 游戏结束界面
+        # 在文件顶部添加退出处理方法
+        def handle_exit_action():
+            pygame.quit()
+            quit()
+
         while game_close:
             dis.fill(WHITE)
             y_position = DIS_HEIGHT/3
             draw_message("Game Over!", RED, dis, DIS_WIDTH/6, y_position)
             draw_message(f"游戏时间: {final_game_time}秒", RED, dis, DIS_WIDTH/6, y_position+40)  # 使用冻结时间
-            # 等动物死完了之后 这游戏时间停止进行
 
             draw_button("继续游戏", DIS_WIDTH/2-75, DIS_HEIGHT/2, 150, 50, BLACK, dis)
-            # draw_button("退出游戏", DIS_WIDTH/2-75, DIS_HEIGHT/2+60, 150, 50, BLACK, dis)
-            pygame.display.update()
+            draw_button("退出游戏", DIS_WIDTH/2-75, DIS_HEIGHT/2+60, 150, 50, BLACK, dis)
 
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:  # 处理窗口关闭事件
-                    game_over = True
-                    game_close = False
-                if event.type == pygame.MOUSEBUTTONDOWN:  # 处理鼠标点击事件
-                    mouse_pos = pygame.mouse.get_pos()
-                    # 检查是否点击在按钮的水平范围内（X轴）
-                    if DIS_WIDTH/2-75 <= mouse_pos[0] <= DIS_WIDTH/2+75:
-                        # 检查是否点击在"继续游戏"按钮的垂直范围内（Y轴）
-                        if DIS_HEIGHT/2 <= mouse_pos[1] <= DIS_HEIGHT/2+50:
-                            game_close = False  # 关闭结束界面
-                            # 重置蛇的初始状态
-                            x1 = DIS_WIDTH / 2  # 重置蛇头X坐标
-                            y1 = DIS_HEIGHT / 2  # 重置蛇头Y坐标
-                            x1_change = SNAKE_BLOCK  # 初始向右移动
-                            y1_change = 0
-                            snake_List = []  # 清空蛇身列表
-                            Length_of_snake = 1  # 重置蛇长
-                            foodx, foody = generate_food_position()  # 生成新食物
-                            start_time = pygame.time.get_ticks()  # 重置计时器
-                            # 重置速度计时
-                            fast_time = 0
-                            slow_time = 0
-                            # 重置游戏状态
-                            game_over = False
-                            game_start = False
-                            dis.fill(WHITE)  # 清空画布
-                            pygame.display.update()  # 立即更新界面
+                if event.type == pygame.QUIT:
+                    handle_exit_action()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = event.pos
+                    # 检查继续游戏按钮点击
+                    continue_button_rect = pygame.Rect(DIS_WIDTH/2 - 75, DIS_HEIGHT/2, 150, 50)
+                    if continue_button_rect.collidepoint(mouse_pos):
+                        game_close = False
+                        # 重置蛇的初始状态
+                        x1 = DIS_WIDTH / 2
+                        y1 = DIS_HEIGHT / 2
+                        x1_change = SNAKE_BLOCK
+                        y1_change = 0
+                        snake_List = []
+                        Length_of_snake = 1
+                        foodx, foody = generate_food_position()
+                        start_time = pygame.time.get_ticks()
+                        fast_time = 0
+                        slow_time = 0
+                        game_over = False
+                        game_start = False
+                        dis.fill(WHITE)
+                        pygame.display.update()
+                    # 检查退出按钮点击
+                    exit_button_rect = pygame.Rect(DIS_WIDTH/2 - 75, DIS_HEIGHT/2 + 60, 150, 50)
+                    if exit_button_rect.collidepoint(mouse_pos):
+                        handle_exit_action()
+
+            pygame.display.update()
 
         # 绘制蛇
         draw_snake(SNAKE_BLOCK, snake_List, dis)
