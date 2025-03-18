@@ -115,6 +115,7 @@ def gameLoop():
     x1_change = SNAKE_BLOCK
     y1_change = 0
 
+    # 在游戏主循环的绘制部分添加（约第175行）
     while not game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -156,10 +157,6 @@ def gameLoop():
                     elif event.key == pygame.K_k:  # L键增大音量
                         current_volume = min(1.0, pygame.mixer.music.get_volume() + 0.1)
                         pygame.mixer.music.set_volume(current_volume)
-
-                # 在显示游戏时间的代码后添加音量显示（约第202行）
-                draw_message(f"音量: {int(pygame.mixer.music.get_volume()*100)}%",
-                            BLACK, dis, DIS_WIDTH - 200, DIS_HEIGHT - 110, center=True)
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
@@ -217,20 +214,12 @@ def gameLoop():
             current_game_time = (pygame.time.get_ticks() - start_time) // 1000
             draw_message(f"游戏时间: {current_game_time}", BLACK, dis, DIS_WIDTH - 200, DIS_HEIGHT - 80, center=True)
 
-        # 绘制暂停/继续按钮（左下角）
-        button_text = "继续" if paused else "暂停"
-        button_width = 150
-        button_height = 50
-        button_x = 20
-        button_y = DIS_HEIGHT - button_height - 20
-        draw_button(button_text, button_x, button_y, button_width, button_height, BLACK, dis)
+            # 显示音量
+            draw_message(f"音量: {int(pygame.mixer.music.get_volume() * 100)}%", BLACK, dis, 10, 40)
 
-        # 显示音量信息
-        # draw_message(f"音量: {int(music_volume * 100)}%", BLACK, dis, 10, 40)
-
-        pygame.display.update()
-        if not paused:
-            clock.tick(SNAKE_SPEED)
+            pygame.display.update()
+            if not paused:
+                clock.tick(SNAKE_SPEED)
 
         while game_close:
             dis.fill(WHITE)
