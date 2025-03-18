@@ -60,7 +60,7 @@ def gameLoop():
     global final_game_time, music_volume, music_playing
     # 在初始化pygame之后添加音乐加载代码
     pygame.mixer.init(frequency=44100, size=-16, channels=2)  # 添加音频参数
-    pygame.mixer.music.set_volume(0.3)  # 设置音量
+    pygame.mixer.music.set_volume(0.1)  # 设置音量
 
     try:
         pygame.mixer.music.load("音乐/周杰伦 - 迷魂曲.flac")
@@ -147,6 +147,19 @@ def gameLoop():
                         pygame.mixer.music.unpause()
                     else:
                         pygame.mixer.music.pause()
+                # 在键盘事件处理部分添加（约第95行）
+                if event.type == pygame.KEYDOWN:
+                    # 原有方向控制代码...
+                    if event.key == pygame.K_l:  # K键减小音量
+                        current_volume = max(0.0, pygame.mixer.music.get_volume() - 0.1)
+                        pygame.mixer.music.set_volume(current_volume)
+                    elif event.key == pygame.K_k:  # L键增大音量
+                        current_volume = min(1.0, pygame.mixer.music.get_volume() + 0.1)
+                        pygame.mixer.music.set_volume(current_volume)
+
+                # 在显示游戏时间的代码后添加音量显示（约第202行）
+                draw_message(f"音量: {int(pygame.mixer.music.get_volume()*100)}%",
+                            BLACK, dis, DIS_WIDTH - 200, DIS_HEIGHT - 110, center=True)
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
