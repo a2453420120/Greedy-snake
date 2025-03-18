@@ -87,11 +87,11 @@ def gameLoop():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
-                # 暂停/继续按钮位置
+                # 暂停/继续按钮位置（左下角）
                 button_width = 150
                 button_height = 50
-                button_x = DIS_WIDTH - button_width - 20
-                button_y = 20
+                button_x = 20  # 距离左边框 20 像素
+                button_y = DIS_HEIGHT - button_height - 20  # 距离下边框 20 像素
                 button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
                 if button_rect.collidepoint(mouse_pos):
                     paused = not paused
@@ -141,12 +141,12 @@ def gameLoop():
             current_game_time = (pygame.time.get_ticks() - start_time) // 1000
             draw_message(f"游戏时间: {current_game_time}", BLACK, dis, DIS_WIDTH - 200, DIS_HEIGHT - 80, center=True)
 
-        # 绘制暂停/继续按钮
+        # 绘制暂停/继续按钮（左下角）
         button_text = "继续" if paused else "暂停"
         button_width = 150
         button_height = 50
-        button_x = DIS_WIDTH - button_width - 20
-        button_y = 20
+        button_x = 20  # 距离左边框 20 像素
+        button_y = DIS_HEIGHT - button_height - 20  # 距离下边框 20 像素
         draw_button(button_text, button_x, button_y, button_width, button_height, BLACK, dis)
 
         pygame.display.update()
