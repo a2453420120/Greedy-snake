@@ -11,10 +11,12 @@ from ui import init_font
 
 # 新增全局变量初始化
 final_game_time = 0
+# 新增一个列表来记录最后10条游戏时间
+game_time_records = []
 
 os.environ['PYGAME_DISABLE_RUNNABLE'] = '1'  # 新增在文件开头
 def gameLoop():
-    global final_game_time
+    global final_game_time, game_time_records
     init_font()  # 确保在游戏循环开始前初始化字体
     # 初始化pygame
     pygame.init()
@@ -50,6 +52,8 @@ def gameLoop():
     # 初始化蛇的位置和速度
     x1 = DIS_WIDTH / 2
     y1 = DIS_HEIGHT / 2
+    x1_change = 0
+    y1_change = 0
 
     # 初始化蛇的列表和长度
     snake_List = []
@@ -118,6 +122,10 @@ def gameLoop():
             if x == snake_Head:
                 game_close = True
                 final_game_time = (pygame.time.get_ticks() - start_time) // 1000  # 新增冻结时间
+                # 记录游戏时间
+                game_time_records.append(final_game_time)
+                # 只保留最后10条记录
+                game_time_records = game_time_records[-10:]
 
         # 游戏结束界面
         # 在文件顶部添加退出处理方法
@@ -130,6 +138,12 @@ def gameLoop():
             y_position = DIS_HEIGHT/3
             draw_message("Game Over!", RED, dis, DIS_WIDTH/6, y_position)
             draw_message(f"游戏时间: {final_game_time}秒", RED, dis, DIS_WIDTH/6, y_position+40)  # 使用冻结时间
+
+            # 显示最后10条游戏时间记录
+            record_y = y_position + 100
+            for i, record in enumerate(reversed(game_time_records)):
+                draw_message(f"第 {len(game_time_records) - i} 次游戏时间: {record} 秒", RED, dis, DIS_WIDTH/6, record_y)
+                record_y += 30
 
             draw_button("继续游戏", DIS_WIDTH/2-75, DIS_HEIGHT/2, 150, 50, BLACK, dis)
             draw_button("退出游戏", DIS_WIDTH/2-75, DIS_HEIGHT/2+60, 150, 50, BLACK, dis)
@@ -153,7 +167,9 @@ def gameLoop():
                         foodx, foody = generate_food_position()
                         start_time = pygame.time.get_ticks()
                         fast_time = 0
+                        slow_time = 0
                         game_over = False
+                        game_start = False
                         dis.fill(WHITE)
                         pygame.display.update()
                     # 检查退出按钮点击
@@ -178,8 +194,6 @@ def gameLoop():
         if x1_change != 0 or y1_change != 0:
             if x1_change == SNAKE_BLOCK * 2 or y1_change == SNAKE_BLOCK * 2:  # 快速移动
                 fast_time += 1
-
-
 
         # 显示现实时间
         current_real_time = datetime.datetime.now().strftime("%H:%M:%S")
