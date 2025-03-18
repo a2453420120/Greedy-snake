@@ -50,8 +50,6 @@ def gameLoop():
     # 初始化蛇的位置和速度
     x1 = DIS_WIDTH / 2
     y1 = DIS_HEIGHT / 2
-    x1_change = 0
-    y1_change = 0
 
     # 初始化蛇的列表和长度
     snake_List = []
@@ -155,9 +153,7 @@ def gameLoop():
                         foodx, foody = generate_food_position()
                         start_time = pygame.time.get_ticks()
                         fast_time = 0
-                        slow_time = 0
                         game_over = False
-                        game_start = False
                         dis.fill(WHITE)
                         pygame.display.update()
                     # 检查退出按钮点击
