@@ -273,9 +273,7 @@ def gameLoop():
 
             pygame.display.update()
 
-    pygame.mixer.music.stop()  # 停止音乐播放
-    pygame.quit()
-    quit()
+
 
 # 退出处理方法
 def handle_exit_action():
