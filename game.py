@@ -145,8 +145,17 @@ def gameLoop():
                 draw_message(f"第 {len(game_time_records) - i} 次游戏时间: {record} 秒", RED, dis, DIS_WIDTH/6, record_y)
                 record_y += 30
 
-            draw_button("继续游戏", DIS_WIDTH/2-75, DIS_HEIGHT/2, 150, 50, BLACK, dis)
-            draw_button("退出游戏", DIS_WIDTH/2-75, DIS_HEIGHT/2+60, 150, 50, BLACK, dis)
+            # 调整按钮位置到右下角
+            button_width = 150
+            button_height = 50
+            button_margin = 20
+            continue_button_x = DIS_WIDTH - button_width - button_margin
+            continue_button_y = DIS_HEIGHT - button_height * 2 - button_margin * 1.5
+            exit_button_x = DIS_WIDTH - button_width - button_margin
+            exit_button_y = DIS_HEIGHT - button_height - button_margin
+
+            draw_button("继续游戏", continue_button_x, continue_button_y, button_width, button_height, BLACK, dis)
+            draw_button("退出游戏", exit_button_x, exit_button_y, button_width, button_height, BLACK, dis)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -154,7 +163,7 @@ def gameLoop():
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = event.pos
                     # 检查继续游戏按钮点击
-                    continue_button_rect = pygame.Rect(DIS_WIDTH/2 - 75, DIS_HEIGHT/2, 150, 50)
+                    continue_button_rect = pygame.Rect(continue_button_x, continue_button_y, button_width, button_height)
                     if continue_button_rect.collidepoint(mouse_pos):
                         game_close = False
                         # 重置蛇的初始状态
@@ -173,7 +182,7 @@ def gameLoop():
                         dis.fill(WHITE)
                         pygame.display.update()
                     # 检查退出按钮点击
-                    exit_button_rect = pygame.Rect(DIS_WIDTH/2 - 75, DIS_HEIGHT/2 + 60, 150, 50)
+                    exit_button_rect = pygame.Rect(exit_button_x, exit_button_y, button_width, button_height)
                     if exit_button_rect.collidepoint(mouse_pos):
                         handle_exit_action()
 
