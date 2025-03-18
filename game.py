@@ -9,15 +9,65 @@ from ui import init_font
 
 # 新增全局变量初始化
 final_game_time = 0
-game_time_records = []
-paused = False  # 新增：用于标记游戏是否暂停
+music_volume = 0.5  # 初始音量，范围 0.0 - 1.0
+music_playing = True  # 标记音乐是否正在播放
 
-os.environ['PYGAME_DISABLE_RUNNABLE'] = '1'
+os.environ['PYGAME_DISABLE_RUNNABLE'] = '1'  # 新增在文件开头
+# 在文件顶部添加全局变量（约第11行）
+game_time_records = []
+
+# 在游戏初始化部分添加音乐设置（约第17行）
+
+
 
 def gameLoop():
-    global final_game_time, game_time_records, paused
-    init_font()
+    global final_game_time, paused  # 新增：声明 paused 为全局变量
+    global game_time_records
+    init_font()  # 确保在游戏循环开始前初始化字体
+    # 初始化pygame
     pygame.init()
+    dis = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
+    pygame.display.set_caption('贪吃蛇游戏')
+    clock = pygame.time.Clock()
+
+    # 初始化游戏状态
+    game_over = False
+    game_start = True
+    game_close = False
+    start_time = pygame.time.get_ticks()  # 游戏开始时开始计时
+    fast_time = 0  # 快速计时
+    slow_time = 0  # 慢速计时
+    paused = False  # 新增：初始化 paused 变量
+
+    # 游戏开始界面
+    while game_start:
+        dis.fill(WHITE)
+        draw_message("贪吃蛇游戏", BLACK, dis, DIS_WIDTH/2-100, DIS_HEIGHT/3)
+        # 创建按钮矩形并绘制按钮
+        start_btn_rect = pygame.Rect(DIS_WIDTH/2-75, DIS_HEIGHT/2, 150, 50)
+        draw_button("开始游戏", start_btn_rect.x, start_btn_rect.y, start_btn_rect.width, start_btn_rect.height, BLACK, dis)
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if start_btn_rect.collidepoint(event.pos):  # 使用手动创建的矩形对象
+                    game_start = False
+
+    global final_game_time, music_volume, music_playing
+    # 在初始化pygame之后添加音乐加载代码
+    pygame.mixer.init(frequency=44100, size=-16, channels=2)  # 添加音频参数
+    pygame.mixer.music.set_volume(0.3)  # 设置音量
+
+    try:
+        pygame.mixer.music.load("音乐/周杰伦 - 迷魂曲.flac")
+        pygame.mixer.music.play(-1, start=0.0)  # 确保从开头循环播放
+    except pygame.error as e:
+        print(f"音乐加载失败: {str(e)}")
+
     dis = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
     pygame.display.set_caption('贪吃蛇游戏')
     clock = pygame.time.Clock()
@@ -82,16 +132,29 @@ def gameLoop():
                 elif event.key == pygame.K_DOWN and y1_change >= 0:
                     y1_change = SNAKE_BLOCK
                     x1_change = 0
-                elif event.key == pygame.K_SPACE:  # 新增：按空格键暂停/继续
+                elif event.key == pygame.K_SPACE:
                     paused = not paused
+                # 音量控制
+                elif event.key == pygame.K_PLUS:  # 增大音量
+                    music_volume = min(music_volume + 0.1, 1.0)
+                    pygame.mixer.music.set_volume(music_volume)
+                elif event.key == pygame.K_MINUS:  # 减小音量
+                    music_volume = max(music_volume - 0.1, 0.0)
+                    pygame.mixer.music.set_volume(music_volume)
+                elif event.key == pygame.K_m:  # 静音/取消静音
+                    music_playing = not music_playing
+                    if music_playing:
+                        pygame.mixer.music.unpause()
+                    else:
+                        pygame.mixer.music.pause()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
                 # 暂停/继续按钮位置（左下角）
                 button_width = 150
                 button_height = 50
-                button_x = 20  # 距离左边框 20 像素
-                button_y = DIS_HEIGHT - button_height - 20  # 距离下边框 20 像素
+                button_x = 20
+                button_y = DIS_HEIGHT - button_height - 20
                 button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
                 if button_rect.collidepoint(mouse_pos):
                     paused = not paused
@@ -145,9 +208,12 @@ def gameLoop():
         button_text = "继续" if paused else "暂停"
         button_width = 150
         button_height = 50
-        button_x = 20  # 距离左边框 20 像素
-        button_y = DIS_HEIGHT - button_height - 20  # 距离下边框 20 像素
+        button_x = 20
+        button_y = DIS_HEIGHT - button_height - 20
         draw_button(button_text, button_x, button_y, button_width, button_height, BLACK, dis)
+
+        # 显示音量信息
+        # draw_message(f"音量: {int(music_volume * 100)}%", BLACK, dis, 10, 40)
 
         pygame.display.update()
         if not paused:
@@ -174,6 +240,8 @@ def gameLoop():
 
             draw_button("继续游戏", continue_button_x, continue_button_y, button_width, button_height, BLACK, dis)
             draw_button("退出游戏", exit_button_x, exit_button_y, button_width, button_height, BLACK, dis)
+
+
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -203,10 +271,12 @@ def gameLoop():
 
             pygame.display.update()
 
+    pygame.mixer.music.stop()  # 停止音乐播放
     pygame.quit()
     quit()
 
 # 退出处理方法
 def handle_exit_action():
+    pygame.mixer.music.stop()  # 停止音乐播放
     pygame.quit()
     quit()
