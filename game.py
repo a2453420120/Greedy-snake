@@ -214,7 +214,7 @@ def gameLoop():
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    handle_exit_action()
+                    handle_exit_action(paused)
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = event.pos
                     continue_button_rect = pygame.Rect(continue_button_x, continue_button_y, button_width, button_height)
@@ -236,14 +236,15 @@ def gameLoop():
                         pygame.display.update()
                     exit_button_rect = pygame.Rect(exit_button_x, exit_button_y, button_width, button_height)
                     if exit_button_rect.collidepoint(mouse_pos):
-                        handle_exit_action()
+                        handle_exit_action(paused)
 
             pygame.display.update()
 
 
 
 # 退出处理方法
-def handle_exit_action():
+def handle_exit_action(paused):
     pygame.mixer.music.stop()  # 停止音乐播放
     pygame.quit()
+    paused = True
     quit()
