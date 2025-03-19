@@ -77,28 +77,8 @@ def gameLoop():
     game_close = False
     start_time = pygame.time.get_ticks()
     fast_time = 0
-    slow_time = 0
-
-    while game_start:
-        dis.fill(WHITE)
-        draw_message("贪吃蛇游戏", BLACK, dis, DIS_WIDTH/2 - 100, DIS_HEIGHT/3)
-        draw_button("开始游戏", DIS_WIDTH/2 - 75, DIS_HEIGHT/2, 150, 50, BLACK, dis)
-        pygame.display.update()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                game_over = True
-                game_start = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                if DIS_WIDTH/2 - 75 <= mouse_pos[0] <= DIS_WIDTH/2 + 75 and \
-                        DIS_HEIGHT/2 <= mouse_pos[1] <= DIS_HEIGHT/2 + 50:
-                    game_start = False
-
     x1 = DIS_WIDTH / 2
     y1 = DIS_HEIGHT / 2
-    x1_change = 0
-    y1_change = 0
 
     snake_List = []
     Length_of_snake = 1
