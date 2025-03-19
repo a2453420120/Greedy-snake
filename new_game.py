@@ -14,8 +14,8 @@ running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            # 当检测到 QUIT 事件时，将 running 标志设置为 False，退出主循环
-            running = False
+    #         # 当检测到 QUIT 事件时，将 running 标志设置为 False，退出主循环
+             running = not running
 
     # 更新屏幕显示
     pygame.display.flip()

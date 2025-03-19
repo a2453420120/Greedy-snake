@@ -51,7 +51,8 @@ def gameLoop():
                 quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_btn_rect.collidepoint(event.pos):  # 使用手动创建的矩形对象
-                    game_start = False
+                    game_start =  not game_start
+
 
     global final_game_time, music_volume, music_playing
     # 在初始化pygame之后添加音乐加载代码
@@ -229,9 +230,7 @@ def gameLoop():
                         foodx, foody = generate_food_position()
                         start_time = pygame.time.get_ticks()
                         fast_time = 0
-                        slow_time = 0
                         game_over = False
-                        game_start = False
                         dis.fill(WHITE)
                         pygame.display.update()
                     exit_button_rect = pygame.Rect(exit_button_x, exit_button_y, button_width, button_height)
