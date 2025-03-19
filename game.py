@@ -109,12 +109,6 @@ def gameLoop():
                 elif event.key == pygame.K_SPACE:
                     paused = not paused
                 # 音量控制
-                elif event.key == pygame.K_PLUS:  # 增大音量
-                    music_volume = min(music_volume + 0.1, 1.0)
-                    pygame.mixer.music.set_volume(music_volume)
-                elif event.key == pygame.K_MINUS:  # 减小音量
-                    music_volume = max(music_volume - 0.1, 0.0)
-                    pygame.mixer.music.set_volume(music_volume)
                 elif event.key == pygame.K_m:  # 静音/取消静音
                     music_playing = not music_playing
                     if music_playing:
