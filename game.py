@@ -31,12 +31,8 @@ def gameLoop():
     clock = pygame.time.Clock()
 
     # 初始化游戏状态
-    game_over = False
     game_start = True
-    game_close = False
     start_time = pygame.time.get_ticks()  # 游戏开始时开始计时
-    fast_time = 0  # 快速计时
-    slow_time = 0  # 慢速计时
     paused = False  # 新增：初始化 paused 变量
 
     # 游戏开始界面
@@ -67,13 +63,10 @@ def gameLoop():
         pygame.mixer.music.play(-1, start=0.0)  # 确保从开头循环播放
     except pygame.error as e:
         print(f"音乐加载失败: {str(e)}")
-
-    dis = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
-    pygame.display.set_caption('贪吃蛇游戏')
+    # 创建时钟对象用于控制游戏帧率（后续会用 clock.tick() 控制刷新速度）
     clock = pygame.time.Clock()
 
     game_over = False
-    game_start = True
     game_close = False
     start_time = pygame.time.get_ticks()
     fast_time = 0
