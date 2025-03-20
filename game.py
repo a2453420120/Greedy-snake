@@ -37,7 +37,6 @@ def gameLoop():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
                 quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_btn_rect.collidepoint(event.pos):  # 使用手动创建的矩形对象
@@ -84,7 +83,8 @@ def gameLoop():
     while not game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                game_over = True
+                handle_exit_action()  # 直接调用退出方法而不是设置game_over
+                return  # 立即退出函数
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT and x1_change <= 0:
                     x1_change = -SNAKE_BLOCK
@@ -180,53 +180,53 @@ def gameLoop():
             if not paused:
                 clock.tick(SNAKE_SPEED)
 
-        while game_close:
-            dis.fill(WHITE)
-            y_position = DIS_HEIGHT/3
-            draw_message("Game Over!", RED, dis, DIS_WIDTH/6, y_position)
-            draw_message(f"游戏时间: {final_game_time}秒", RED, dis, DIS_WIDTH/6, y_position + 40)
+    while game_close:
+        dis.fill(WHITE)
+        y_position = DIS_HEIGHT/3
+        draw_message("Game Over!", RED, dis, DIS_WIDTH/6, y_position)
+        draw_message(f"游戏时间: {final_game_time}秒", RED, dis, DIS_WIDTH/6, y_position + 40)
 
-            record_y = y_position + 100
-            for i, record in enumerate(reversed(game_time_records)):
-                draw_message(f"第 {len(game_time_records) - i} 次游戏时间: {record} 秒", RED, dis, DIS_WIDTH/6, record_y)
-                record_y += 30
+        record_y = y_position + 100
+        for i, record in enumerate(reversed(game_time_records)):
+            draw_message(f"第 {len(game_time_records) - i} 次游戏时间: {record} 秒", RED, dis, DIS_WIDTH/6, record_y)
+            record_y += 30
 
-            button_width = 150
-            button_height = 50
-            button_margin = 20
-            continue_button_x = DIS_WIDTH - button_width - button_margin
-            continue_button_y = DIS_HEIGHT - button_height * 2 - button_margin * 1.5
-            exit_button_x = DIS_WIDTH - button_width - button_margin
-            exit_button_y = DIS_HEIGHT - button_height - button_margin
+        button_width = 150
+        button_height = 50
+        button_margin = 20
+        continue_button_x = DIS_WIDTH - button_width - button_margin
+        continue_button_y = DIS_HEIGHT - button_height * 2 - button_margin * 1.5
+        exit_button_x = DIS_WIDTH - button_width - button_margin
+        exit_button_y = DIS_HEIGHT - button_height - button_margin
 
-            draw_button("继续游戏", continue_button_x, continue_button_y, button_width, button_height, BLACK, dis)
-            draw_button("退出游戏", exit_button_x, exit_button_y, button_width, button_height, BLACK, dis)
+        draw_button("继续游戏", continue_button_x, continue_button_y, button_width, button_height, BLACK, dis)
+        draw_button("退出游戏", exit_button_x, exit_button_y, button_width, button_height, BLACK, dis)
 
 
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    handle_exit_action()
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_pos = event.pos
-                    continue_button_rect = pygame.Rect(continue_button_x, continue_button_y, button_width, button_height)
-                    if continue_button_rect.collidepoint(mouse_pos):
-                        game_close = False
-                        x1 = DIS_WIDTH / 2
-                        y1 = DIS_HEIGHT / 2
-                        x1_change = SNAKE_BLOCK
-                        y1_change = 0
-                        snake_List = []
-                        Length_of_snake = 1
-                        foodx, foody = generate_food_position()
-                        start_time = pygame.time.get_ticks()
-                        game_over = False
-                        dis.fill(WHITE)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                handle_exit_action()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = event.pos
+                continue_button_rect = pygame.Rect(continue_button_x, continue_button_y, button_width, button_height)
+                if continue_button_rect.collidepoint(mouse_pos):
+                    game_close = False
+                    x1 = DIS_WIDTH / 2
+                    y1 = DIS_HEIGHT / 2
+                    x1_change = SNAKE_BLOCK
+                    y1_change = 0
+                    snake_List = []
+                    Length_of_snake = 1
+                    foodx, foody = generate_food_position()
+                    start_time = pygame.time.get_ticks()
+                    game_over = False
+                    dis.fill(WHITE)
                     exit_button_rect = pygame.Rect(exit_button_x, exit_button_y, button_width, button_height)
                     if exit_button_rect.collidepoint(mouse_pos):
                         handle_exit_action()
 
-            pygame.display.update()
+        pygame.display.update()
 
 
 
