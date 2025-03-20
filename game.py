@@ -33,7 +33,6 @@ def gameLoop():
         draw_button("开始游戏", start_btn_rect.x, start_btn_rect.y, start_btn_rect.width, start_btn_rect.height, BLACK, dis)
         #
         pygame.display.update()
-        # pygame.display.flip()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
