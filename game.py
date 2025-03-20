@@ -6,7 +6,6 @@ import datetime
 
 # 新增全局变量初始化
 final_game_time = 0
-music_volume = 0.5  # 初始音量，范围 0.0 - 1.0
 music_playing = True  # 标记音乐是否正在播放
 
 os.environ['PYGAME_DISABLE_RUNNABLE'] = '1'  # 新增在文件开头
@@ -17,7 +16,7 @@ game_time_records = []
 def gameLoop():
     global final_game_time, paused  # 新增：声明 paused 为全局变量
     global game_time_records
-    global final_game_time, music_volume, music_playing
+    global final_game_time, music_playing
     # 初始化pygame
     dis = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
 
