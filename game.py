@@ -16,7 +16,7 @@ game_time_records = []
 def gameLoop():
     global final_game_time, paused  # 新增：声明 paused 为全局变量
     global game_time_records
-    global final_game_time, music_playing
+    global music_playing
     # 初始化pygame
     dis = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
 
