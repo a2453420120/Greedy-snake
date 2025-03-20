@@ -84,7 +84,7 @@ def gameLoop():
     while not game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                game_over = True
+                handle_exit_action()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT and x1_change <= 0:
                     x1_change = -SNAKE_BLOCK
