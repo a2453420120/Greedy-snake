@@ -37,6 +37,7 @@ def gameLoop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_btn_rect.collidepoint(event.pos):  # 使用手动创建的矩形对象
                     game_start =  not game_start
