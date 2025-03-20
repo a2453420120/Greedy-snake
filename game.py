@@ -28,11 +28,9 @@ def gameLoop():
     pygame.init()
     dis = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
     pygame.display.set_caption('贪吃蛇游戏')
-    clock = pygame.time.Clock()
 
     # 初始化游戏状态
     game_start = True
-    start_time = pygame.time.get_ticks()  # 游戏开始时开始计时
     paused = False  # 新增：初始化 paused 变量
 
     # 游戏开始界面
@@ -64,6 +62,8 @@ def gameLoop():
         pygame.mixer.music.play(-1, start=0.0)  # 确保从开头循环播放
     except pygame.error as e:
         print(f"音乐加载失败: {str(e)}")
+
+
     # 创建时钟对象用于控制游戏帧率（后续会用 clock.tick() 控制刷新速度）
     clock = pygame.time.Clock()
 
@@ -155,26 +155,25 @@ def gameLoop():
 
             snake_Head = [x1, y1]
             snake_List.append(snake_Head)
+            # 去wei
             if len(snake_List) > Length_of_snake:
                 del snake_List[0]
-
+            # 死亡
             for x in snake_List[:-1]:
                 if x == snake_Head:
                     game_close = True
                     final_game_time = (pygame.time.get_ticks() - start_time) // 1000
                     game_time_records.append(final_game_time)
                     game_time_records = game_time_records[-10:]
-
+            # 绘制yi
             draw_snake(SNAKE_BLOCK, snake_List, dis)
+            # 分数
             draw_score(Length_of_snake - 1, dis)
 
+            # 吃球
             if x1 == foodx and y1 == foody:
-                foodx, foody = generate_food_position()
-                Length_of_snake += 10
-
-            if x1_change != 0 or y1_change != 0:
-                if x1_change == SNAKE_BLOCK * 2 or y1_change == SNAKE_BLOCK * 2:
-                    fast_time += 1
+                 foodx, foody = generate_food_position()
+                 Length_of_snake += 10
 
             current_real_time = datetime.datetime.now().strftime("%H:%M:%S")
             draw_message(f"现实时间: {current_real_time}", BLACK, dis, DIS_WIDTH - 200, DIS_HEIGHT - 50, center=True)
@@ -184,7 +183,7 @@ def gameLoop():
 
             # 显示音量
             draw_message(f"音量: {int(pygame.mixer.music.get_volume() * 100)}%", BLACK, dis, 10, 40)
-
+            # 开始游戏
             pygame.display.update()
             if not paused:
                 clock.tick(SNAKE_SPEED)
@@ -232,7 +231,6 @@ def gameLoop():
                         fast_time = 0
                         game_over = False
                         dis.fill(WHITE)
-                        pygame.display.update()
                     exit_button_rect = pygame.Rect(exit_button_x, exit_button_y, button_width, button_height)
                     if exit_button_rect.collidepoint(mouse_pos):
                         handle_exit_action()
