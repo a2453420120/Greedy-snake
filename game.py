@@ -14,12 +14,10 @@ os.environ['PYGAME_DISABLE_RUNNABLE'] = '1'  # 新增在文件开头
 game_time_records = []
 
 # 在游戏初始化部分添加音乐设置（约第17行）
-
-
-
 def gameLoop():
     global final_game_time, paused  # 新增：声明 paused 为全局变量
     global game_time_records
+    global final_game_time, music_volume, music_playing
     # 初始化pygame
     dis = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
 
@@ -45,7 +43,7 @@ def gameLoop():
                     game_start =  not game_start
 
 
-    global final_game_time, music_volume, music_playing
+
     # 在初始化pygame之后添加音乐加载代码
     pygame.mixer.init(frequency=44100, size=-16, channels=2)  # 添加音频参数
     pygame.mixer.music.set_volume(0.1)  # 设置音量
