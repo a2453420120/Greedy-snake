@@ -79,6 +79,7 @@ def gameLoop():
     x1_change = SNAKE_BLOCK
     y1_change = 0
 
+
     # 在游戏主循环的绘制部分添加（约第175行）
     while not game_over:
         for event in pygame.event.get():
