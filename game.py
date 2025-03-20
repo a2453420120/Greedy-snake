@@ -1,11 +1,8 @@
 import os
-import pygame
 import random
-from constants import *
 from ui import *
 from snake import *
 import datetime
-from ui import init_font
 
 # 新增全局变量初始化
 final_game_time = 0
@@ -23,11 +20,8 @@ game_time_records = []
 def gameLoop():
     global final_game_time, paused  # 新增：声明 paused 为全局变量
     global game_time_records
-    init_font()  # 确保在游戏循环开始前初始化字体
     # 初始化pygame
-    pygame.init()
     dis = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
-    pygame.display.set_caption('贪吃蛇游戏')
 
     # 初始化游戏状态
     game_start = True
@@ -37,16 +31,15 @@ def gameLoop():
     while game_start:
         dis.fill(WHITE)
         draw_message("贪吃蛇游戏", BLACK, dis, DIS_WIDTH/2-100, DIS_HEIGHT/3)
-        # 创建按钮矩形并绘制按钮
+        # # 创建按钮矩形并绘制按钮
         start_btn_rect = pygame.Rect(DIS_WIDTH/2-75, DIS_HEIGHT/2, 150, 50)
         draw_button("开始游戏", start_btn_rect.x, start_btn_rect.y, start_btn_rect.width, start_btn_rect.height, BLACK, dis)
-
+        #
         pygame.display.update()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_btn_rect.collidepoint(event.pos):  # 使用手动创建的矩形对象
                     game_start =  not game_start
@@ -70,22 +63,21 @@ def gameLoop():
     game_over = False
     game_close = False
     start_time = pygame.time.get_ticks()
-    fast_time = 0
     x1 = DIS_WIDTH / 2
     y1 = DIS_HEIGHT / 2
-
+    #
     snake_List = []
     Length_of_snake = 1
 
     def generate_food_position():
-        while True:
-            foodx = round(random.randrange(0, DIS_WIDTH - SNAKE_BLOCK) / 10.0) * 10.0
-            foody = round(random.randrange(0, DIS_HEIGHT - SNAKE_BLOCK) / 10.0) * 10.0
-            if [foodx, foody] not in snake_List:
-                return foodx, foody
-
+       while True:
+             foodx = round(random.randrange(0, DIS_WIDTH - SNAKE_BLOCK) / 10.0) * 10.0
+             foody = round(random.randrange(0, DIS_HEIGHT - SNAKE_BLOCK) / 10.0) * 10.0
+             if [foodx, foody] not in snake_List:
+                 return foodx, foody
+    #
     foodx, foody = generate_food_position()
-
+    #
     x1_change = SNAKE_BLOCK
     y1_change = 0
 
@@ -136,7 +128,7 @@ def gameLoop():
                 button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
                 if button_rect.collidepoint(mouse_pos):
                     paused = not paused
-
+        # shi
         if not paused:
             if x1 >= DIS_WIDTH:
                 x1 = 0
@@ -149,10 +141,11 @@ def gameLoop():
 
             x1 += x1_change
             y1 += y1_change
-
+            # 隐藏
             dis.fill(WHITE)
+            # 画球 制造头
             pygame.draw.rect(dis, BLACK, [foodx, foody, SNAKE_BLOCK, SNAKE_BLOCK])
-
+            # 制造头
             snake_Head = [x1, y1]
             snake_List.append(snake_Head)
             # 去wei
@@ -228,7 +221,6 @@ def gameLoop():
                         Length_of_snake = 1
                         foodx, foody = generate_food_position()
                         start_time = pygame.time.get_ticks()
-                        fast_time = 0
                         game_over = False
                         dis.fill(WHITE)
                     exit_button_rect = pygame.Rect(exit_button_x, exit_button_y, button_width, button_height)
