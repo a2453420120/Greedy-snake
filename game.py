@@ -14,7 +14,7 @@ game_time_records = []
 
 # 在游戏初始化部分添加音乐设置（约第17行）
 def gameLoop():
-    global final_game_time, paused  # 新增：声明 paused 为全局变量
+    global final_game_time, paused, paused_  # 新增：声明 paused 为全局变量
     global game_time_records
     global music_playing
     # 初始化pygame
@@ -177,9 +177,10 @@ def gameLoop():
             draw_message(f"音量: {int(pygame.mixer.music.get_volume() * 100)}%", BLACK, dis, 10, 40)
 
             # 动态切换暂停/继续按钮
-            button_text = "继续" if paused else "暂停"
-            draw_button(button_text, 20, DIS_HEIGHT - 70, 150, 50, BLACK, dis)
-
+            paused_ = False
+            paused_ = "继续" if paused_ else "暂停"
+            draw_button( paused_, 20, DIS_HEIGHT - 70, 150, 50, BLACK, dis)
+            print(f"音乐播放状态: {music_playing}, 音量: {int(pygame.mixer.music.get_volume() * 100)}%, 暂停状态: {paused_}")
             # 开始游戏
             pygame.display.update()
 
