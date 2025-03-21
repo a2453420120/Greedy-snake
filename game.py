@@ -176,18 +176,13 @@ def gameLoop():
             # 显示音量
             draw_message(f"音量: {int(pygame.mixer.music.get_volume() * 100)}%", BLACK, dis, 10, 40)
 
-            # 暂停/继续按钮（根据状态显示不同文字）
-            # 绘制暂停/继续按钮（左下角）
+            # 动态切换暂停/继续按钮
             button_text = "继续" if paused else "暂停"
-            button_width = 150
-            button_height = 50
-            button_x = 20
-            button_y = DIS_HEIGHT - button_height - 20
-            draw_button(button_text, button_x, button_y, button_width, button_height, BLACK, dis)
-
+            draw_button(button_text, 20, DIS_HEIGHT - 70, 150, 50, BLACK, dis)
 
             # 开始游戏
             pygame.display.update()
+
             if not paused:
                 clock.tick(SNAKE_SPEED)
 
